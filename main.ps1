@@ -1,11 +1,9 @@
-# https://github.com/OSDeploy/live.osdcloud
+Write-Verbose -Verbose 'https://github.com/OSDeploy/live.osdcloud'
 
-# LOCALAPPDATA System Environment Variable
-Set-ExecutionPolicy Bypass -Force -Verbose
-Get-ExecutionPolicy
-
-
-
+if ($env:SystemDrive -eq 'X:')
+{
+    Set-ExecutionPolicy Bypass -Force -Verbose
+}
 
 if (Get-Item env:LOCALAPPDATA -ErrorAction Ignore)
 {
