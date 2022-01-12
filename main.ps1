@@ -1,8 +1,11 @@
 # https://github.com/OSDeploy/live.osdcloud
 
 # LOCALAPPDATA System Environment Variable
-Set-ExecutionPolicy RemoteSigned -Force -Verbose
+Set-ExecutionPolicy Bypass -Force -Verbose
 Get-ExecutionPolicy
+
+
+
 
 if (Get-Item env:LOCALAPPDATA -ErrorAction Ignore)
 {
