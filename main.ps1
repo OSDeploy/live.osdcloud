@@ -1,4 +1,5 @@
 Write-Verbose -Verbose 'https://github.com/OSDeploy/live.osdcloud'
+Write-Verbose -Verbose 'Version 22.1.12.1'
 
 if ($env:SystemDrive -eq 'X:')
 {
