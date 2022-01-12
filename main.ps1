@@ -1,6 +1,7 @@
 # https://github.com/OSDeploy/live.osdcloud
 
 # LOCALAPPDATA System Environment Variable
+Set-ExecutionPolicy RemoteSigned -Force
 if (Get-Item env:LOCALAPPDATA -ErrorAction Ignore)
 {
     Write-Verbose -Verbose 'System Environment Variable LOCALAPPDATA is already present in this PowerShell session'
