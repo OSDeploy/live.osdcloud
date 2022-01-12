@@ -1,5 +1,4 @@
 # https://github.com/OSDeploy/live.osdcloud
-# PowerShell script to install PowerShell Gallery support in WinPE
 
 # LOCALAPPDATA System Environment Variable
 if (Get-Item env:LOCALAPPDATA -ErrorAction Ignore)
