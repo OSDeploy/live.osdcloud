@@ -2,7 +2,7 @@
 # PowerShell script to install PowerShell Gallery support in WinPE
 
 # LOCALAPPDATA System Environment Variable
-if (Get-Item ENV:LOCALAPPDATA -ErrorAction Ignore)
+if (Get-Item env:LOCALAPPDATA -ErrorAction Ignore)
 {
     Write-Verbose -Verbose 'System Environment Variable LOCALAPPDATA is already present in this PowerShell session'
 }
@@ -14,6 +14,24 @@ else
     [System.Environment]::SetEnvironmentVariable('LOCALAPPDATA',"$env:UserProfile\AppData\Local")
 }
 
+# Create PowerShell User Profile Directory
+if (!(Test-Path "$env:UserProfile\Documents\WindowsPowerShell")) {
+    New-Item -Path "$env:UserProfile\Documents\WindowsPowerShell" -ItemType Directory -Force | Out-Null
+}
+
+# Set PowerShell Profile
+$PowerShellProfile = @'
+Set-ExecutionPolicy RemoteSigned -Force
+[System.Environment]::SetEnvironmentVariable('LOCALAPPDATA',"$env:UserProfile\AppData\Local")
+'@
+
+if ($env:SystemDrive -eq 'X:')
+{
+    Write-Verbose 'WinPE does not have the LOCALAPPDATA System Environment Variable'
+    Write-Verbose 'This can be enabled for this Power Session, but it will not persist'
+    Write-Verbose -Verbose 'Set System Environment Variable LOCALAPPDATA for this PowerShell session'
+    $PowerShellProfile | Set-Content -Path "$env:UserProfile\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1" -Force -Encoding Unicode
+}
 
 
 
@@ -45,17 +63,7 @@ Write-Verbose -Verbose 'Importing Modules'
 Import-Module PowerShellGet -Force
 Import-Module PackageManagement -Force
 
-Write-Verbose -Verbose 'Setting PowerShell Profile'
-$WinpeProfile = @'
-Set-ExecutionPolicy RemoteSigned -Force
-[System.Environment]::SetEnvironmentVariable('LOCALAPPDATA',"$env:UserProfile\AppData\Local")
-'@
 
-if (!(Test-Path 'X:\Windows\System32\config\systemprofile\Documents\WindowsPowerShell')) {
-    New-Item -Path 'X:\Windows\System32\config\systemprofile\Documents\WindowsPowerShell' -ItemType Directory -Force
-}
-
-$WinpeProfile | Set-Content -Path "X:\Windows\System32\config\systemprofile\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1" -Force -Encoding Unicode
 
 #Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted
 Write-Verbose -Verbose 'Installation Complete'

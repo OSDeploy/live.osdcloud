@@ -1,8 +1,8 @@
 if (Get-Item ENV:LOCALAPPDATA -ErrorAction Ignore)
 {
-    Return $true
+    $true
 }
 else
 {
-    Return $false
+    $false
 }
